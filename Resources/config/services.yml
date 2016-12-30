@@ -1,9 +1,9 @@
 services:
   ozean12_google_pubsub.pubsub_client.service:
-  class: Google\Cloud\PubSub\PubSubClient
-  public: false
-  arguments:
-    - # config
+    class: Google\Cloud\PubSub\PubSubClient
+    public: false
+    arguments:
+      - # config
 
   ozean12_google_pubsub.client.service:
     class: Ozean12\GooglePubSubBundle\Service\AbstractClient
