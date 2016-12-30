@@ -15,6 +15,7 @@ use Symfony\Component\DependencyInjection\Loader;
  */
 class Ozean12GooglePubSubExtension extends Extension
 {
+    const PUBSUB_CLIENT_SERVICE_DEFINITION = 'ozean12_google_pubsub.pubsub_client.service';
     const CLIENT_SERVICE_DEFINITION = 'ozean12_google_pubsub.client.service';
     const PUBLISHER_SERVICE_DEFINITION = 'ozean12_google_pubsub.publisher.';
     const SUBSCRIBER_SERVICE_DEFINITION = 'ozean12_google_pubsub.subscriber.';
@@ -31,19 +32,25 @@ class Ozean12GooglePubSubExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');
 
-        $baseDefinition = $container->getDefinition(self::CLIENT_SERVICE_DEFINITION);
-
         $definitions = [];
         $clientConfig = [
             'projectId' => $config['project_id'],
             'keyFilePath' => $config['key_file_path'],
         ];
 
+        $pubSubDefinition = $container
+            ->getDefinition(self::PUBSUB_CLIENT_SERVICE_DEFINITION)
+            ->replaceArgument(0, $clientConfig)
+        ;
+
+        $baseDefinition = $container->getDefinition(self::CLIENT_SERVICE_DEFINITION);
+
+
         foreach ($config['topics'] as $topic) {
             $definitions[self::PUBLISHER_SERVICE_DEFINITION.$topic] = $this->createClientDefinition(
                 $baseDefinition,
+                $pubSubDefinition,
                 $topic,
-                $clientConfig,
                 Publisher::class
             );
         }
@@ -51,8 +58,8 @@ class Ozean12GooglePubSubExtension extends Extension
         foreach ($config['subscriptions'] as $subscription) {
             $definitions[self::SUBSCRIBER_SERVICE_DEFINITION.$subscription] = $this->createClientDefinition(
                 $baseDefinition,
+                $pubSubDefinition,
                 $subscription,
-                $clientConfig,
                 Subscriber::class
             );
         }
@@ -62,20 +69,20 @@ class Ozean12GooglePubSubExtension extends Extension
 
     /**
      * @param Definition $baseDefinition
+     * @param Definition $pubSubClientDefinition
      * @param string     $topicOrSubscription
-     * @param array      $clientConfig
      * @param string     $class
      * @return Definition
      */
     private function createClientDefinition(
         Definition $baseDefinition,
+        Definition $pubSubClientDefinition,
         $topicOrSubscription,
-        array $clientConfig,
         $class
     ) {
         return (clone $baseDefinition)
             ->replaceArgument(0, $topicOrSubscription)
-            ->replaceArgument(1, $clientConfig)
+            ->replaceArgument(1, $pubSubClientDefinition)
             ->setClass($class)
             ->setPublic(true)
             ->addTag(self::TAG_NAME)

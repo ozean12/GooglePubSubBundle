@@ -29,16 +29,13 @@ abstract class AbstractClient
     /**
      * AbstractClient constructor.
      *
-     * @param Serializer $serializer
-     * @param array      $config
+     * @param PubSubClient $client
+     * @param Serializer   $serializer
      */
-    public function __construct(Serializer $serializer, array $config)
+    public function __construct(PubSubClient $client, Serializer $serializer)
     {
+        $this->client = $client;
         $this->serializer = $serializer;
-        $this->client = new PubSubClient([
-            'projectId' => 'bbox-150315',
-            'keyFilePath' => '/var/www/webapp/application_default_credentials.json',
-        ]);
     }
 
     /**

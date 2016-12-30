@@ -1,18 +1,14 @@
 <?php
 
-namespace Ozean12\GooglePubSubBundle\DTO;
-
-use JMS\Serializer\Annotation as Serializer;
+namespace Ozean12\GooglePubSubBundle\Tests\DTO;
 
 /**
  * Class PublishMessageResultDTO
  */
-class PublishMessageResultDTO
+class TestPublishMessageResultDTO
 {
     /**
      * @var string[]
-     * @Serializer\Type("array<string>")
-     * @Serializer\SerializedName("messageIds")
      */
     private $messageIds;
 
@@ -26,7 +22,7 @@ class PublishMessageResultDTO
 
     /**
      * @param string[] $messageIds
-     * @return PublishMessageResultDTO
+     * @return TestPublishMessageResultDTO
      */
     public function setMessageIds(array $messageIds)
     {

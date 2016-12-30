@@ -3,6 +3,7 @@
 namespace Ozean12\GooglePubSubBundle\Service;
 
 use Google\Cloud\Exception\ConflictException;
+use Google\Cloud\PubSub\PubSubClient;
 use Google\Cloud\PubSub\Topic;
 use JMS\Serializer\Serializer;
 use Ozean12\GooglePubSubBundle\DTO\MessageDataDTOInterface;
@@ -26,13 +27,13 @@ class Publisher extends AbstractClient
     /**
      * Publisher constructor.
      *
-     * @param string     $topic
-     * @param array      $config
-     * @param Serializer $serializer
+     * @param string       $topic
+     * @param PubSubClient $client
+     * @param Serializer   $serializer
      */
-    public function __construct($topic, array $config, Serializer $serializer)
+    public function __construct($topic, PubSubClient $client, Serializer $serializer)
     {
-        parent::__construct($serializer, $config);
+        parent::__construct($client, $serializer);
 
         $this->topicName = $topic;
     }
