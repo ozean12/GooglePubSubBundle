@@ -1,0 +1,21 @@
+{
+    "name": "ozean12/googlepubsub",
+    "description": "A Symfony 2/3 integration with Google Cloud PubSub",
+    "type": "library",
+    "require": {
+        "google/cloud": "^0.20.1",
+        "jms/serializer-bundle": "^1.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4.8|~5.0"
+    },
+    "authors": [
+        {
+            "name": "alahtarin",
+            "email": "alex.lahtarin@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": { "Ozean12\\GooglePubSubBundle\\": "" }
+    }
+}

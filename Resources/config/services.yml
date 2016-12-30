@@ -1,0 +1,8 @@
+services:
+  ozean12_google_pubsub.client.service:
+    class: Ozean12\GooglePubSubBundle\Service\AbstractClient
+    public: false
+    arguments:
+      - # topic or subscription
+      - # config
+      - "@jms_serializer"
