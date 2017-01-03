@@ -17,5 +17,6 @@
     ],
     "autoload": {
         "psr-4": { "Ozean12\\GooglePubSubBundle\\": "" }
-    }
+    },
+    "minimum-stability": "stable"
 }

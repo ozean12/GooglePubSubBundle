@@ -1,0 +1,12 @@
+checks:
+  php:
+    code_rating: true
+    duplication: true
+
+build:
+  dependencies:
+    before:
+      - composer install
+  environment:
+    php:
+      version: 5.5.25
