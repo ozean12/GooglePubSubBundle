@@ -1,3 +1,8 @@
+[![Build Status](https://travis-ci.org/ozean12/GooglePubSubBundle.svg?branch=master)](https://travis-ci.org/ozean12/GooglePubSubBundle)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/ozean12/GooglePubSubBundle/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/ozean12/GooglePubSubBundle/?branch=master)
+[![Latest Stable Version](https://poser.pugx.org/ozean12/googlepubsub/v/stable.png)](https://packagist.org/packages/ozean12/googlepubsub)
+[![Total Downloads](https://poser.pugx.org/ozean12/googlepubsub/downloads.png)](https://packagist.org/packages/ozean12/googlepubsub)
+
 # Ozean12GooglePubSubBundle
 A Symfony 2 / Symfony 3 bundle which integrates [Google Cloud Pub Sub](https://cloud.google.com/pubsub/docs/overview) with your application.
 ## Installation

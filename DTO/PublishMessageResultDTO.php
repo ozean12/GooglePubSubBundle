@@ -19,7 +19,7 @@ class PublishMessageResultDTO
     /**
      * @return string[]
      */
-    public function getMessageIds(): array
+    public function getMessageIds()
     {
         return $this->messageIds;
     }
