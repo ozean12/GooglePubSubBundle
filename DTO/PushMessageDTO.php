@@ -68,4 +68,48 @@ class PushMessageDTO
     {
         return $this->publishTime;
     }
+
+    /**
+     * @param \string[] $attributes
+     * @return PushMessageDTO
+     */
+    public function setAttributes($attributes)
+    {
+        $this->attributes = $attributes;
+
+        return $this;
+    }
+
+    /**
+     * @param string $data
+     * @return PushMessageDTO
+     */
+    public function setData($data)
+    {
+        $this->data = $data;
+
+        return $this;
+    }
+
+    /**
+     * @param string $messageId
+     * @return PushMessageDTO
+     */
+    public function setMessageId($messageId)
+    {
+        $this->messageId = $messageId;
+
+        return $this;
+    }
+
+    /**
+     * @param string $publishTime
+     * @return PushMessageDTO
+     */
+    public function setPublishTime($publishTime)
+    {
+        $this->publishTime = $publishTime;
+
+        return $this;
+    }
 }
