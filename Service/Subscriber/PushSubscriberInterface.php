@@ -14,9 +14,4 @@ interface PushSubscriberInterface
      * @return mixed
      */
     public function process(PushMessageDTO $message);
-
-    /**
-     * @return string
-     */
-    public function getSubscription();
 }
