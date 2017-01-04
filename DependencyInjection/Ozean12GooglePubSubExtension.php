@@ -18,7 +18,7 @@ class Ozean12GooglePubSubExtension extends Extension
     const CLIENT_SERVICE_DEFINITION = 'ozean12_google_pubsub.client.service';
     const PUBLISHER_SERVICE_DEFINITION = 'ozean12_google_pubsub.publisher.';
     const SUBSCRIBER_MANAGER_SERVICE_DEFINITION = 'ozean12_google_pubsub.push_subscriber_manager.service';
-    const TAG_NAME = 'ozean12_pub_sub_client';
+    const TAG_NAME = 'ozean12_pub_sub_service';
 
     /**
      * {@inheritdoc}
@@ -54,11 +54,17 @@ class Ozean12GooglePubSubExtension extends Extension
             ;
         }
 
-        $subscriberManager = $container->getDefinition(self::SUBSCRIBER_MANAGER_SERVICE_DEFINITION);
-        foreach ($config['push_subscriptions'] as $subscriberServiceName) {
-            $subscriberManager->addMethodCall('addSubscriber', [new Reference($subscriberServiceName)]);
+        $subscriberManager = $container
+            ->getDefinition(self::SUBSCRIBER_MANAGER_SERVICE_DEFINITION)
+            ->addTag(self::TAG_NAME)
+        ;
+
+        foreach ($config['push_subscriptions'] as $subscriptionName => $subscriberServiceName) {
+            $subscriberManager
+                ->addMethodCall('addSubscriber', [$subscriptionName, new Reference($subscriberServiceName)])
+            ;
         }
 
-        $container->setDefinitions($definitions);
+        $container->addDefinitions($definitions);
     }
 }
