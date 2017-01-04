@@ -28,7 +28,7 @@ class Configuration implements ConfigurationInterface
                 ->arrayNode('topics')
                     ->prototype('scalar')->end()
                 ->end()
-                ->arrayNode('subscriptions')
+                ->arrayNode('push_subscriptions')
                     ->prototype('scalar')->end()
                 ->end()
             ->end()
