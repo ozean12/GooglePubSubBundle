@@ -51,7 +51,7 @@ class PushSubscriberManagerTest extends \PHPUnit_Framework_TestCase
             $manager->setLogger($logger);
         }
 
-        $this->assertEquals($expectedResult, $manager->processMessage($messageRequest));
+        $this->assertEquals($expectedResult, $manager->processMessage($messageRequest), $testCase);
     }
 
     /**

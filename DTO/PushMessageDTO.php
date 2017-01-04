@@ -38,7 +38,7 @@ class PushMessageDTO
     private $publishTime;
 
     /**
-     * @return mixed
+     * @return string[]
      */
     public function getAttributes()
     {
@@ -54,7 +54,7 @@ class PushMessageDTO
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getMessageId()
     {
@@ -62,7 +62,7 @@ class PushMessageDTO
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getPublishTime()
     {
@@ -70,10 +70,10 @@ class PushMessageDTO
     }
 
     /**
-     * @param \string[] $attributes
+     * @param string[] $attributes
      * @return PushMessageDTO
      */
-    public function setAttributes($attributes)
+    public function setAttributes(array $attributes)
     {
         $this->attributes = $attributes;
 
