@@ -38,4 +38,26 @@ class PushMessageRequestDTO
     {
         return $this->subscription;
     }
+
+    /**
+     * @param PushMessageDTO $message
+     * @return PushMessageRequestDTO
+     */
+    public function setMessage($message)
+    {
+        $this->message = $message;
+
+        return $this;
+    }
+
+    /**
+     * @param string $subscription
+     * @return PushMessageRequestDTO
+     */
+    public function setSubscription($subscription)
+    {
+        $this->subscription = $subscription;
+
+        return $this;
+    }
 }

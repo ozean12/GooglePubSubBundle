@@ -7,7 +7,7 @@ use Google\Cloud\PubSub\PubSubClient;
 use Google\Cloud\PubSub\Topic;
 use JMS\Serializer\Serializer;
 use JMS\Serializer\SerializerBuilder;
-use Ozean12\GooglePubSubBundle\Service\Publisher;
+use Ozean12\GooglePubSubBundle\Service\Publisher\Publisher;
 use Ozean12\GooglePubSubBundle\Tests\DTO\TestPublishMessageDTO;
 use Ozean12\GooglePubSubBundle\Tests\DTO\TestPublishMessageResultDTO;
 

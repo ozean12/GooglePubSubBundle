@@ -41,7 +41,7 @@ class PushSubscriberManager
         }
 
         $this->logInfo('Received message : {subscription}[{message}]; Subscriber not found', [
-            $message->getMessageId(),
+            'message' => $message->getMessageId(),
             'subscription' => $subscription,
         ]);
 
