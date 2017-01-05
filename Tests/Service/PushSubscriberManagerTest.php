@@ -14,6 +14,7 @@ class PushSubscriberManagerTest extends \PHPUnit_Framework_TestCase
 {
     const GOOD_SUBSCRIPTION = 'test_sub';
     const BAD_SUBSCRIPTION = 'some_other_sub';
+    const PROJECT_ID = 'amazing-project';
 
     /**
      * @dataProvider processMessageDataProvider
@@ -31,7 +32,7 @@ class PushSubscriberManagerTest extends \PHPUnit_Framework_TestCase
         $messageRequest,
         $testCase
     ) {
-        $manager = new PushSubscriberManager();
+        $manager = new PushSubscriberManager(self::PROJECT_ID);
 
         foreach ($subscribers as $subscriptionName => $subscriber) {
             $manager->addSubscriber($subscriptionName, $subscriber);
@@ -65,7 +66,7 @@ class PushSubscriberManagerTest extends \PHPUnit_Framework_TestCase
         $messageRequest = new PushMessageRequestDTO();
         $messageRequest
             ->setMessage($message)
-            ->setSubscription(self::GOOD_SUBSCRIPTION)
+            ->setSubscription(sprintf('projects/%s/subscriptions/%s', self::PROJECT_ID, self::GOOD_SUBSCRIPTION))
         ;
 
         $badProcessor = $this

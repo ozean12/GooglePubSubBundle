@@ -4,7 +4,6 @@ namespace Ozean12\GooglePubSubBundle\Service\Subscriber;
 
 use Ozean12\GooglePubSubBundle\DTO\PushMessageRequestDTO;
 use Ozean12\GooglePubSubBundle\Service\LoggerTrait;
-use Psr\Log\LoggerInterface;
 
 /**
  * Class PushSubscriberManager
@@ -14,9 +13,24 @@ class PushSubscriberManager
     use LoggerTrait;
 
     /**
+     * @var string
+     */
+    private $projectId;
+
+    /**
      * @var PushSubscriberInterface[]
      */
     private $subscribers;
+
+    /**
+     * PushSubscriberManager constructor.
+     *
+     * @param string $projectId
+     */
+    public function __construct($projectId)
+    {
+        $this->projectId = $projectId;
+    }
 
     /**
      * @param PushMessageRequestDTO $messageRequest
@@ -24,7 +38,12 @@ class PushSubscriberManager
      */
     public function processMessage(PushMessageRequestDTO $messageRequest)
     {
-        $subscription = $messageRequest->getSubscription();
+        $subscription = str_replace(
+            sprintf('projects/%s/subscriptions/', $this->projectId),
+            '',
+            $messageRequest->getSubscription()
+        );
+
         $message = $messageRequest->getMessage();
 
         if (isset($this->subscribers[$subscription])) {

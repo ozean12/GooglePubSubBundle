@@ -56,6 +56,7 @@ class Ozean12GooglePubSubExtension extends Extension
 
         $subscriberManager = $container
             ->getDefinition(self::SUBSCRIBER_MANAGER_SERVICE_DEFINITION)
+            ->replaceArgument(0, $config['project_id'])
             ->addTag(self::TAG_NAME)
         ;
 

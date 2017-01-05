@@ -15,3 +15,5 @@ services:
 
   ozean12_google_pubsub.push_subscriber_manager.service:
     class: Ozean12\GooglePubSubBundle\Service\Subscriber\PushSubscriberManager
+    arguments:
+      - # project id
