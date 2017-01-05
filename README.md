@@ -1,6 +1,7 @@
 [![Build Status](https://travis-ci.org/ozean12/GooglePubSubBundle.svg?branch=master)](https://travis-ci.org/ozean12/GooglePubSubBundle)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/ozean12/GooglePubSubBundle/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/ozean12/GooglePubSubBundle/?branch=master)
-[![Latest Stable Version](https://poser.pugx.org/ozean12/googlepubsub/v/stable.png)](https://packagist.org/packages/ozean12/googlepusubscriptionsl Downloads](https://poser.pugx.org/ozean12/googlepubsub/downloads.png)](https://packagist.org/packages/ozean12/googlepubsub)
+[![Latest Stable Version](https://poser.pugx.org/ozean12/googlepubsub/v/stable.png)](https://packagist.org/packages/ozean12/googlepubsub)
+[![Total Downloads](https://poser.pugx.org/ozean12/googlepubsub/downloads.png)](https://packagist.org/packages/ozean12/googlepubsub)
 
 # Ozean12GooglePubSubBundle
 A Symfony 2 / Symfony 3 bundle which integrates [Google Cloud Pub Sub](https://cloud.google.com/pubsub/docs/overview) with your application.
@@ -43,7 +44,7 @@ ozean12_google_pub_sub:
   topics:
     - my_topic
     
-  # list of Push subscriptions in format (subscription_name: service_name)
+  # list of Push subscriptions in format (subscription_name: service_name) (see Subscribing to Push messages section for more info)
   push_subscriptions:
     my_push_subscription: my_bundle.my_firts_push.subscriber
 
@@ -67,8 +68,7 @@ If topic does not exist, it will be created automatically.
  
 Result of the call will be an instance of `Ozean12\GooglePubSubBundle\DTO\PublishMessageResultDTO` which will contain the ids of created messages.
 ### 2. Subscribing to Push messages
-When using the [Push subscription](https://cloud.google.com/pubsub/docs/subscriber#overview-of-subscriptions), you need to create the endpoint which will receive the message from Google Pub/Sub and then pass it to `PushSubscriberManager`
-An example of this setup using the [FOS REST Bundle](http://symfony.com/doc/current/bundles/FOSRestBundle/index.html):
+When using the [Push subscription](https://cloud.google.com/pubsub/docs/subscriber#overview-of-subscriptions), you need to create the endpoint which will receive the message from Google Pub/Sub and then pass it to `PushSubscriberManager`. This topic is outside the scope of the bundle. An example of this setup using the [FOS REST Bundle](http://symfony.com/doc/current/bundles/FOSRestBundle/index.html):
 ```php
 // GoogleCloudController.php
 
