@@ -160,6 +160,7 @@ This will produce following log entries:
 ```text
 [2016-12-23 17:51:42] pub_sub.INFO: New topic my_topic created {"topic":"my_topic"} []
 [2016-12-23 17:57:01] pub_sub.INFO: Message(s) 123456789 submitted to topic my_topic {"messages":"123456789","topic":"my_topic"} []
+[2017-01-04 15:57:32] pub_sub.INFO: Received message : my_first_subscription[123456789]; Processed with MyBundle\Service\GooglePubSub\Subscriber\MyFirstSubscriber subscriber {"message":"123456789","subscription":"my_first_subscription","subscriberClass":"MyBundle\\Service\\GooglePubSub\\Subscriber\\MyFirstSubscriber"} []
 ```
 
 ## Credits
