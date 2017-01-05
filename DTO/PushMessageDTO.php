@@ -38,6 +38,18 @@ class PushMessageDTO
     private $publishTime;
 
     /**
+     * PushMessageDTO constructor.
+     *
+     * @param string   $data
+     * @param string[] $attributes
+     */
+    public function __construct($data = null, array $attributes = null)
+    {
+        $this->attributes = $attributes;
+        $this->data = $data;
+    }
+
+    /**
      * @return string[]
      */
     public function getAttributes()
