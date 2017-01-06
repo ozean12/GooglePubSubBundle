@@ -2,11 +2,10 @@
 
 namespace Ozean12\GooglePubSubBundle\DependencyInjection;
 
-use Ozean12\GooglePubSubBundle\Service\Publisher;
-use Ozean12\GooglePubSubBundle\Service\Subscriber;
+use Ozean12\GooglePubSubBundle\Service\Publisher\Publisher;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 
@@ -18,8 +17,8 @@ class Ozean12GooglePubSubExtension extends Extension
     const PUBSUB_CLIENT_SERVICE_DEFINITION = 'ozean12_google_pubsub.pubsub_client.service';
     const CLIENT_SERVICE_DEFINITION = 'ozean12_google_pubsub.client.service';
     const PUBLISHER_SERVICE_DEFINITION = 'ozean12_google_pubsub.publisher.';
-    const SUBSCRIBER_SERVICE_DEFINITION = 'ozean12_google_pubsub.subscriber.';
-    const TAG_NAME = 'ozean12_pub_sub_client';
+    const SUBSCRIBER_MANAGER_SERVICE_DEFINITION = 'ozean12_google_pubsub.push_subscriber_manager.service';
+    const TAG_NAME = 'ozean12_pub_sub_service';
 
     /**
      * {@inheritdoc}
@@ -45,47 +44,28 @@ class Ozean12GooglePubSubExtension extends Extension
 
         $baseDefinition = $container->getDefinition(self::CLIENT_SERVICE_DEFINITION);
 
-
         foreach ($config['topics'] as $topic) {
-            $definitions[self::PUBLISHER_SERVICE_DEFINITION.$topic] = $this->createClientDefinition(
-                $baseDefinition,
-                $pubSubDefinition,
-                $topic,
-                Publisher::class
-            );
+            $definitions[self::PUBLISHER_SERVICE_DEFINITION.$topic] = (clone $baseDefinition)
+                ->replaceArgument(0, $topic)
+                ->replaceArgument(1, $pubSubDefinition)
+                ->setClass(Publisher::class)
+                ->setPublic(true)
+                ->addTag(self::TAG_NAME)
+            ;
         }
 
-        foreach ($config['subscriptions'] as $subscription) {
-            $definitions[self::SUBSCRIBER_SERVICE_DEFINITION.$subscription] = $this->createClientDefinition(
-                $baseDefinition,
-                $pubSubDefinition,
-                $subscription,
-                Subscriber::class
-            );
-        }
-
-        $container->setDefinitions($definitions);
-    }
-
-    /**
-     * @param Definition $baseDefinition
-     * @param Definition $pubSubClientDefinition
-     * @param string     $topicOrSubscription
-     * @param string     $class
-     * @return Definition
-     */
-    private function createClientDefinition(
-        Definition $baseDefinition,
-        Definition $pubSubClientDefinition,
-        $topicOrSubscription,
-        $class
-    ) {
-        return (clone $baseDefinition)
-            ->replaceArgument(0, $topicOrSubscription)
-            ->replaceArgument(1, $pubSubClientDefinition)
-            ->setClass($class)
-            ->setPublic(true)
+        $subscriberManager = $container
+            ->getDefinition(self::SUBSCRIBER_MANAGER_SERVICE_DEFINITION)
+            ->replaceArgument(0, $config['project_id'])
             ->addTag(self::TAG_NAME)
         ;
+
+        foreach ($config['push_subscriptions'] as $subscriptionName => $subscriberServiceName) {
+            $subscriberManager
+                ->addMethodCall('addSubscriber', [$subscriptionName, new Reference($subscriberServiceName)])
+            ;
+        }
+
+        $container->addDefinitions($definitions);
     }
 }

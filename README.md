@@ -43,6 +43,10 @@ ozean12_google_pub_sub:
   # list of PubSub topics (See Publishing section for more info)
   topics:
     - my_topic
+    
+  # list of Push subscriptions in format (subscription_name: service_name) (see Subscribing to Push messages section for more info)
+  push_subscriptions:
+    my_push_subscription: my_bundle.my_firts_push.subscriber
 
 ```
 ## Usage
@@ -63,8 +67,76 @@ $result = $publisher->publish($message);
 If topic does not exist, it will be created automatically.
  
 Result of the call will be an instance of `Ozean12\GooglePubSubBundle\DTO\PublishMessageResultDTO` which will contain the ids of created messages.
-### 2. Subscribing to messages
-Not yet supported.
+### 2. Subscribing to Push messages
+When using the [Push subscription](https://cloud.google.com/pubsub/docs/subscriber#overview-of-subscriptions), you need to create the endpoint which will receive the message from Google Pub/Sub and then pass it to `PushSubscriberManager`. This topic is outside the scope of the bundle. An example of this setup using the [FOS REST Bundle](http://symfony.com/doc/current/bundles/FOSRestBundle/index.html):
+```php
+// GoogleCloudController.php
+
+use Ozean12\GooglePubSubBundle\DTO\PushMessageRequestDTO;
+
+/**
+ * Class GoogleCloudController
+ *
+ * @Version("v1")
+ * @Route("/google-cloud/")
+ */
+class GoogleCloudController extends FOSRestController
+{
+    /**
+     * @ApiDoc(
+     *   resource = true,
+     *   description = "Receive a new PubSub message and process it",
+     *   statusCodes = {
+     *     204 = "Returned when successful",
+     *     403 = "Returned when access denied"
+     *   }
+     * )
+     *
+     * @ParamConverter("message", converter="fos_rest.request_body")
+     *
+     * @Route("pub-sub")
+     * @Method({"POST"})
+     * @View()
+     *
+     * @param PushMessageRequestDTO $message
+     * @return mixed
+     */
+    public function pubSub(PushMessageRequestDTO $message)
+    {
+        $this->get('ozean12_google_pubsub.push_subscriber_manager.service')->processMessage($message);
+    }
+}
+```
+By using the `@ParamConverter` annotation Symfony will automatically convert the request to `PushMessageRequestDTO`
+
+`PushMessageRequestDTO` has two properties: 
+- `message`: instance of `PushMessageDTO`. For all the fields refer to [Push request body](https://cloud.google.com/pubsub/docs/subscriber#receive)
+- `subscription`: a string with the name of Pub/Sub subscription
+
+The `PushSubscriberManager->processMessage()` method will iterate over all registered subscribers and run the one with the name equal to the subscription property of the message. Example of subscriber:
+```php
+// MyPushSubscriber.php
+
+use Ozean12\GooglePubSubBundle\DTO\PushMessageDTO;
+use Ozean12\GooglePubSubBundle\Service\Subscriber\PushSubscriberInterface;
+
+/**
+ * Class MyPushSubscriber
+ */
+class MyPushSubscriber implements PushSubscriberInterface
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function process(PushMessageDTO $message)
+    {
+        /** @var SendTransactionalEmailDataDTO $emailDTO */
+        $data = base64_decode($message->getData())
+
+        // process your data here
+    }
+}
+```
 ### 3. Using Logger
 If you want to log the interaction with Google services, setup the `logger_channel` option with the channel you want to use. Ex:
 ```yaml
@@ -88,6 +160,7 @@ This will produce following log entries:
 ```text
 [2016-12-23 17:51:42] pub_sub.INFO: New topic my_topic created {"topic":"my_topic"} []
 [2016-12-23 17:57:01] pub_sub.INFO: Message(s) 123456789 submitted to topic my_topic {"messages":"123456789","topic":"my_topic"} []
+[2017-01-04 15:57:32] pub_sub.INFO: Received message : my_first_subscription[123456789]; Processed with MyBundle\Service\GooglePubSub\Subscriber\MyFirstSubscriber subscriber {"message":"123456789","subscription":"my_first_subscription","subscriberClass":"MyBundle\\Service\\GooglePubSub\\Subscriber\\MyFirstSubscriber"} []
 ```
 
 ## Credits

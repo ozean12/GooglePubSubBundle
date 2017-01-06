@@ -1,6 +1,6 @@
 <?php
 
-namespace Ozean12\GooglePubSubBundle\Service;
+namespace Ozean12\GooglePubSubBundle\Service\Publisher;
 
 use Google\Cloud\Exception\ConflictException;
 use Google\Cloud\PubSub\PubSubClient;
@@ -8,6 +8,7 @@ use Google\Cloud\PubSub\Topic;
 use JMS\Serializer\Serializer;
 use Ozean12\GooglePubSubBundle\DTO\MessageDataDTOInterface;
 use Ozean12\GooglePubSubBundle\DTO\PublishMessageResultDTO;
+use Ozean12\GooglePubSubBundle\Service\AbstractClient;
 
 /**
  * Class Publisher
