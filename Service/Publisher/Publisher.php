@@ -43,14 +43,20 @@ class Publisher extends AbstractClient
      * @param MessageDataDTOInterface $data
      * @param array                   $attributes
      * @param array                   $options
+     * @param array                   $publisherOptions
      * @return PublishMessageResultDTO
      */
-    public function publish(MessageDataDTOInterface $data, array $attributes = [], $options = [])
+    public function publish(MessageDataDTOInterface $data, array $attributes = [], $options = [], $publisherOptions = [])
     {
         $this->setupTopic();
 
+        $context = (new SerializationContext())->setSerializeNull(true);
+        if (!empty($publisherOptions['serializationGroups'])) {
+            $context->setGroups($publisherOptions['serializationGroups']);
+        }
+
         $message = [
-            'data' => $this->serializer->serialize($data, 'json'),
+            'data' => $this->serializer->serialize($data, 'json', $context),
         ];
 
         if (!empty($attributes)) {
