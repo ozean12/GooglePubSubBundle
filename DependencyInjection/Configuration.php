@@ -25,6 +25,7 @@ class Configuration implements ConfigurationInterface
                 ->scalarNode('project_id')->cannotBeEmpty()->end()
                 ->scalarNode('key_file_path')->cannotBeEmpty()->end()
                 ->scalarNode('logger_channel')->defaultNull()->end()
+                ->scalarNode('topic_suffix')->defaultNull()->end()
                 ->arrayNode('topics')
                     ->prototype('scalar')->end()
                 ->end()
