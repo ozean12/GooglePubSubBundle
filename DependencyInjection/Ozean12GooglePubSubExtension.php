@@ -48,6 +48,7 @@ class Ozean12GooglePubSubExtension extends Extension
             $definitions[self::PUBLISHER_SERVICE_DEFINITION.$topic] = (clone $baseDefinition)
                 ->replaceArgument(0, $topic)
                 ->replaceArgument(1, $pubSubDefinition)
+                ->replaceArgument(2, $config['topic_suffix'] ?? '')
                 ->setClass(Publisher::class)
                 ->setPublic(true)
                 ->addTag(self::TAG_NAME)

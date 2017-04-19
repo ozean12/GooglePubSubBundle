@@ -32,12 +32,13 @@ class Publisher extends AbstractClient
      * @param string       $topic
      * @param PubSubClient $client
      * @param Serializer   $serializer
+     * @param string       $suffix
      */
-    public function __construct($topic, PubSubClient $client, Serializer $serializer)
+    public function __construct($topic, PubSubClient $client, Serializer $serializer, string $suffix = '')
     {
         parent::__construct($client, $serializer);
 
-        $this->topicName = $topic;
+        $this->topicName = $topic.$suffix;
     }
 
     /**
@@ -48,9 +49,9 @@ class Publisher extends AbstractClient
      * @return PublishMessageResultDTO
      */
     public function publish(
-        MessageDataDTOInterface $data, 
-        array $attributes = [], 
-        $options = [], 
+        MessageDataDTOInterface $data,
+        array $attributes = [],
+        $options = [],
         $publisherOptions = []
     ) {
         $this->setupTopic();
