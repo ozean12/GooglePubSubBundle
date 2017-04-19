@@ -23,13 +23,20 @@ class PushSubscriberManager
     private $subscribers;
 
     /**
+     * @var string
+     */
+    private $suffix;
+
+    /**
      * PushSubscriberManager constructor.
      *
      * @param string $projectId
+     * @param string $suffix
      */
-    public function __construct($projectId)
+    public function __construct($projectId, string $suffix = '')
     {
         $this->projectId = $projectId;
+        $this->suffix = $suffix;
     }
 
     /**
@@ -43,6 +50,8 @@ class PushSubscriberManager
             '',
             $messageRequest->getSubscription()
         );
+        // Remove suffix from subscription name
+        $subscription = preg_replace('/^(.*)'.preg_quote($this->suffix, '/').'$/', "\\1", $subscription);
 
         $message = $messageRequest->getMessage();
 

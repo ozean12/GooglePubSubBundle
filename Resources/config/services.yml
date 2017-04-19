@@ -18,3 +18,4 @@ services:
     class: Ozean12\GooglePubSubBundle\Service\Subscriber\PushSubscriberManager
     arguments:
       - # project id
+      - "%env_suffix%"
