@@ -3,7 +3,7 @@
     "description": "A Symfony 2/3 integration with Google Cloud PubSub",
     "type": "library",
     "require": {
-        "google/cloud": "~0.51",
+        "google/cloud": "^0.49.0",
         "jms/serializer-bundle": "^1.1"
     },
     "require-dev": {
