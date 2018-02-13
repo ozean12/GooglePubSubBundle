@@ -2,7 +2,7 @@
 
 namespace Ozean12\GooglePubSubBundle\Service\Publisher;
 
-use Google\Cloud\Exception\ConflictException;
+use Google\Cloud\Core\Exception\ConflictException;
 use Google\Cloud\PubSub\PubSubClient;
 use Google\Cloud\PubSub\Topic;
 use JMS\Serializer\Serializer;
